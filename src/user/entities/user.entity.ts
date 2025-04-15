@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { profile } from './profile';
 import { post } from './post';
+import { userRole } from '../enum/user.role.enum';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -11,6 +12,13 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({
+    type:'enum',
+    enum:userRole,
+    default:userRole.USER
+  })
+  role:userRole
 
 @OneToOne(() => profile)
 @JoinColumn()

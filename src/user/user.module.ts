@@ -8,6 +8,10 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { profile } from './entities/profile';
 import { post } from './entities/post';
+import * as dotenv from 'dotenv'
+import { RolesGuard } from 'src/auth/guard/role.guard';
+dotenv.config()
+
 
 @Module({
   imports: [TypeOrmModule.forFeature([User,profile,post]),
@@ -24,7 +28,7 @@ import { post } from './entities/post';
   
 ],
   controllers: [UserController],
-  providers: [UserService,JwtStrategy],
-  exports:[UserService,PassportModule,JwtStrategy]
+  providers: [UserService,JwtStrategy,RolesGuard],
+  exports:[UserService,PassportModule,JwtStrategy,TypeOrmModule]
 })
 export class UserModule {}

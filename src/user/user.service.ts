@@ -11,6 +11,8 @@ import { createUserProfileDto } from './dto/createUserProfile.dto';
 import { profile } from './entities/profile';
 import { createUserPostDto } from './dto/createUserPost.dto';
 import { post } from './entities/post';
+import { Roles } from 'src/auth/guard/role';
+import { userRole } from './enum/user.role.enum';
 
 @Injectable()
 export class UserService {
@@ -28,15 +30,20 @@ export class UserService {
     // }
     //  const salt = await bcrypt.genSalt(10);
     // dto.password = await bcrypt.hash(dto.password, salt);
-
-// const payload = { sub: 'user.id', email: 'user.email' };
+const {email}=dto
+    const existingUser =await  this.userRepository.findOne({where:{email}})
+    if(existingUser){
+      throw new HttpException('user already exist',400)
+    
+    }
+const payload = { sub: 'user.id', email: 'user.email', };
 const salt = await bcrypt.genSalt(10);
 dto.password = await bcrypt.hash(dto.password, salt);
 
     const newCar = await this.userRepository.create(dto);
     return{
      userDetails : await this.userRepository.save(newCar),
-    //  access_token: await this.jwtService.signAsync(payload),
+     access_token: await this.jwtService.signAsync(payload),
     }
   }
    async findEmail(email:string){
@@ -64,7 +71,7 @@ dto.password = await bcrypt.hash(dto.password, salt);
     return `This action removes a #${id} user`;
   }
 
-  async user(headers:any) {
+  async user(headers:any) :Promise<any>{
     const authorizationHeader =headers.authorization;
     if(authorizationHeader){
       const token = authorizationHeader.replace('Bearer ','');
@@ -113,4 +120,17 @@ user.profile = savedProfile
   }
 
 
+
+  async promoteToAdmin(userId: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+
+    if (!user) {
+      throw new HttpException('User not found',404);
+    }
+
+    user.role= userRole.ADMIN;
+    return this.userRepository.save(user);
+  }
 }
+  
+

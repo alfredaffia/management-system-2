@@ -6,6 +6,7 @@ import { User } from './user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { profile } from './user/entities/profile';
 import { post } from './user/entities/post';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { post } from './user/entities/post';
         })
 
     }),
-    TodoModule, UserModule],
+    TodoModule, UserModule, AuthModule],
   controllers: [],
   providers: [],
 })
