@@ -9,7 +9,7 @@ import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
-  constructor(private  UserService: UserService,
+  constructor(private  userService: UserService,
     private configService: ConfigService
   ) {
     super({
@@ -20,15 +20,14 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
     });
   }
 
-//   async validate(data:{email}):Promise<User>{
-// const {email}  = data;
-// const user = await this.UserService.findEmail(email);
-// if(!user){
-//     throw new UnauthorizedException('login first to access this endpoints');
-    
-// }
-// return user
-// }
+  async validate(payload: {email}): Promise<User>{
+    const {email} = payload;
+    const user = await this.userService.findEmail(email)
+    if(!user){
+        throw new UnauthorizedException('Login first to access this endpoint')
+    }
+    return user;
+}
 
 
 // // jwt.strategy.ts
@@ -42,18 +41,7 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
 
 
 
-async validate(payload: any): Promise<any> {
-  const user = await this.UserService.findEmail(payload.email);
-  if (!user) {
-    throw new UnauthorizedException('User not found or unauthorized');
-  }
 
-  return {
-    id: user.id,
-    email: user.email,
-    role: user.role, 
-  };
-}
 }
 
 
