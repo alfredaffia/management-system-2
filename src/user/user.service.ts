@@ -3,11 +3,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-// import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
-import { Roles } from 'src/auth/guard/role';
 import { UserRole } from './enum/user.role.enum';
 import { LoginDto } from './dto/login.dto';
 import { Request, Response } from 'express';
@@ -122,20 +120,20 @@ export class UserService {
 
   }
 
-    async findOne(id: string) {
-   const findUserById= await this.userRepository.findOneBy({ id });
-   if (!findUserById) {
-    throw new HttpException('User not found', 404);
-   }
-   return findUserById;
+  async findOne(id: string) {
+    const findUserById = await this.userRepository.findOneBy({ id });
+    if (!findUserById) {
+      throw new HttpException('User not found', 404);
+    }
+    return findUserById;
   }
-async update( id:string, updateUserDto:UpdateUserDto){
-  const updateUser = await this.userRepository.findOneBy({id})
-if (!updateUser){
-  throw new NotFoundException('user not found' )
-}
-return this.userRepository.save(updateUser)
-}
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const updateUser = await this.userRepository.findOneBy({ id })
+    if (!updateUser) {
+      throw new NotFoundException('user not found')
+    }
+    return this.userRepository.save(updateUser)
+  }
 
   async updateUserRole(id: string, role: UserRole) {
     const user = await this.userRepository.findOneBy({ id });
@@ -146,7 +144,7 @@ return this.userRepository.save(updateUser)
     return this.userRepository.save(user);
   }
 
-  async remove(id){
+  async remove(id) {
     return this.userRepository.delete(id)
   }
 }

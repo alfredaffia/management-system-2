@@ -1,9 +1,15 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity,  PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from '../enum/user.role.enum';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
 
   @Column({ unique: true })
   email: string;

@@ -1,8 +1,7 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { UserService } from "src/user/user.service";
 import { ForbiddenRoleException } from "../exception/role.exception";
-import { UserRole } from "src/user/enum/user.role.enum";
 
 
 @Injectable()

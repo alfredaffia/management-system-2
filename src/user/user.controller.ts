@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Res, } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { createUserProfileDto } from './dto/createUserProfile.dto';
-import { createUserPostDto } from './dto/createUserPost.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/auth/guard/role';
 import { RolesGuard } from 'src/auth/guard/role.guard';
@@ -15,7 +13,7 @@ import {  Response } from 'express';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('signup')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -47,9 +45,9 @@ export class UserController {
     return this.userService.remove(+id);
   }
   
-  @Patch(':id/promote')
-  // @UseGuards(JwtAuthGuard)
-  // @Roles(userRole.ADMIN) // Only allow admin to promote others
+  @Patch(':id')
+  @UseGuards(AuthGuard(),RolesGuard)
+  @Roles(UserRole.USER) // Only allow admin to access this route
   async makeadmin(@Param('id') id: string ,@Body()role:UserRole) {
     return this.userService.updateUserRole(id, role);
   }
