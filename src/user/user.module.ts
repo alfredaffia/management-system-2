@@ -6,15 +6,13 @@ import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
-import { profile } from './entities/profile';
-import { post } from './entities/post';
 import * as dotenv from 'dotenv'
 import { RolesGuard } from 'src/auth/guard/role.guard';
 dotenv.config()
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User,profile,post]),
+  imports: [TypeOrmModule.forFeature([User]),
   JwtModule.register({
     global:true,
     secret:process.env.JWTSecret,

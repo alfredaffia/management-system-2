@@ -4,8 +4,6 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService ,} from '@nestjs/config';
 import { User } from './user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { profile } from './user/entities/profile';
-import { post } from './user/entities/post';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -21,13 +19,15 @@ import { AuthModule } from './auth/auth.module';
             username:ConfigService.getOrThrow('DB_USERNAME'),
             password:ConfigService.getOrThrow('DB_PASSWORD'),
             database:ConfigService.getOrThrow('DB_NAME'),
-            entities:[User,profile,post],
+            entities:[User],
             synchronize:true
 
         })
 
     }),
-    TodoModule, UserModule, AuthModule],
+    TodoModule, UserModule,
+    //  AuthModule
+    ],
   controllers: [],
   providers: [],
 })

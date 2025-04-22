@@ -2,11 +2,8 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from "@
 import { Reflector } from "@nestjs/core";
 import { UserService } from "src/user/user.service";
 import { ForbiddenRoleException } from "../exception/role.exception";
-import { userRole } from "src/user/enum/user.role.enum";
+import { UserRole } from "src/user/enum/user.role.enum";
 
-
-@Injectable()
-//role.guard.ts file
 
 @Injectable()
 export class RolesGuard implements CanActivate{
@@ -15,11 +12,12 @@ constructor (private reflector:Reflector,private userService:UserService){}
 
  async canActivate(context: ExecutionContext):Promise<boolean> {
   const roles=this.reflector.get<string[]>('roles',context.getHandler()); //The roles variable retrieves the roles metadata attached to the route handler (the function that will handle the request).
-  // console.log('roles',roles
+  console.log('roles',roles)
   const request = context.switchToHttp().getRequest(); //The request object represents the incoming HTTP request. It contains information like headers, the current user, and other request-related data.
   if(request?.user){
    const headers:Headers=request.headers;
   let user = this.userService.user(headers);
+  console.log('user',user)
    // The code fetches the request headers and calls the userService.user(headers) method to retrieve the current user's details, such as their role.
   
    if (!roles.includes((await user).role)) {
