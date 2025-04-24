@@ -18,7 +18,7 @@ export class UserService {
     private jwtService: JwtService) { }
   async create(payload: CreateUserDto) {
     payload.email = payload.email.toLowerCase()
-    const { email, password, ...rest } = payload;
+    const { email, password, firstName,lastName, ...rest } = payload;
     const user = await this.userRepository.findOne({ where: { email: email } });
     if (user) {
       throw new HttpException('user with this email already exist', 400)
@@ -28,6 +28,8 @@ export class UserService {
     const userDetails = await this.userRepository.save({
       email,
       password: hashPassword,
+      firstName,
+      lastName,
       ...rest
     })
 
@@ -134,16 +136,21 @@ export class UserService {
     }
     return this.userRepository.save(updateUser)
   }
-
-  async updateUserRole(id: string, role: UserRole) {
+  async promoteToAdmin(id: string): Promise<Partial<User>> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
-    user.role = role;
-    return this.userRepository.save(user);
+  
+    // Set the role to ADMIN
+    user.role = UserRole.ADMIN;
+  
+    // Save the updated user
+    const updatedUser = await this.userRepository.save(user);
+  
+    // Return only specific fields as Partial<User>
+    return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
   }
-
   async remove(id) {
     return this.userRepository.delete(id)
   }

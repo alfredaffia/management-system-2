@@ -25,7 +25,7 @@ export class UserController {
   }
   @Get()
   @UseGuards(AuthGuard(),RolesGuard)
-   @Roles(UserRole.USER) // Only allow admin to access this route
+   @Roles(UserRole.ADMIN) // Only allow admin to access this route
    findAll() {
    return this.userService.findAll();
    }
@@ -44,12 +44,18 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
-  
-  @Patch(':id')
-  @UseGuards(AuthGuard(),RolesGuard)
-  @Roles(UserRole.USER) // Only allow admin to access this route
-  async makeadmin(@Param('id') id: string ,@Body()role:UserRole) {
-    return this.userService.updateUserRole(id, role);
+  // @UseGuards(RolesGuard)
+  // @Roles(UserRole.ADMIN)
+  //   @Patch(':id')
+  //   updateRole(@Param('id') id: string, @Body('role') role:UserRole) {
+  //     return this.userService.updateUserRole(id, role);
+  //   }
+
+  @Patch(':id/promote')
+  @UseGuards(AuthGuard())
+  @Roles(UserRole.ADMIN) // Only allow admin to promote others
+  async makeadmin(@Param('id') id: string) {
+    return this.userService.promoteToAdmin(id);
   }
 
 }
