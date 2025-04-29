@@ -11,7 +11,7 @@ import { DatabaseModule } from './db/database.module';
 
 
     TodoModule, UserModule,
-    //  AuthModule
+
     ],
   controllers: [],
   providers: [],
