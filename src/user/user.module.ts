@@ -5,9 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { JwtStrategy } from '../auth/jwt.strategy';
 import * as dotenv from 'dotenv'
-import { RolesGuard } from 'src/auth/guard/role.guard';
+import { RolesGuard } from '../auth/guard/role.guard';
 dotenv.config()
 
 
