@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../auth/guard/role';
-import { RolesGuard } from 'src/auth/guard/role.guard';
+import { RolesGuard } from '../auth/guard/role.guard';
 import { UserRole } from './enum/user.role.enum';
 import { LoginDto } from './dto/login.dto';
 import {  Response } from 'express';
