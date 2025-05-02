@@ -37,9 +37,7 @@ export class UserService {
     return {
       access_token: await this.jwtService.signAsync(Userpayload),
     };
-
   }
-
 
   async signIn(payload: LoginDto, @Res() res: Response) {
     const { email, password } = payload;
