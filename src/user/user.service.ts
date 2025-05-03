@@ -128,12 +128,20 @@ export class UserService {
     return findUserById;
   }
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const updateUser = await this.userRepository.findOneBy({ id })
-    if (!updateUser) {
+    const newUpdate = await this.userRepository.findOne({where:{ id }})
+    if (!newUpdate) {
       throw new NotFoundException('user not found')
     }
-    return this.userRepository.save(updateUser)
+
+    const updateUser = this.userRepository.update(id, updateUserDto)
+    const updatedUser = await this.userRepository.findOne({where:{id}})
+    return{
+      statusCode :200,
+      message: 'user updated successfully',
+      data:updatedUser
+    }
   }
+
   async promoteToAdmin(id: string): Promise<Partial<User>> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
@@ -149,6 +157,7 @@ export class UserService {
     // Return only specific fields as Partial<User>
     return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
   }
+  
   async remove(id) {
     return this.userRepository.delete(id)
   }

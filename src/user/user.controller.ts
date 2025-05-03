@@ -40,22 +40,18 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
+  @Patch(':id/promote')
+  @UseGuards(AuthGuard())
+  @Roles(UserRole.ADMIN) // Only allow admin to promote others
+  async promoteToAdmin(@Param('id') id: string) {
+    return this.userService.promoteToAdmin(id);
+  }
+
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
-  // @UseGuards(RolesGuard)
-  // @Roles(UserRole.ADMIN)
-  //   @Patch(':id')
-  //   updateRole(@Param('id') id: string, @Body('role') role:UserRole) {
-  //     return this.userService.updateUserRole(id, role);
-  //   }
 
-  @Patch(':id/promote')
-  @UseGuards(AuthGuard())
-  @Roles(UserRole.ADMIN) // Only allow admin to promote others
-  async makeadmin(@Param('id') id: string) {
-    return this.userService.promoteToAdmin(id);
-  }
 
 }
