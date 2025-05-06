@@ -142,7 +142,8 @@ export class UserService {
     }
   }
 
-  async promoteToAdmin(id: string): Promise<Partial<User>> {
+  async promoteToAdmin(id: string) {
+    
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -157,7 +158,7 @@ export class UserService {
     // Return only specific fields as Partial<User>
     return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
   }
-  
+
   async remove(id) {
     return this.userRepository.delete(id)
   }
