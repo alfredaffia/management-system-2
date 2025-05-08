@@ -133,7 +133,7 @@ export class UserService {
       throw new NotFoundException('user not found')
     }
 
-    const updateUser = this.userRepository.update(id, updateUserDto)
+    const updateUser = await this.userRepository.update(id, updateUserDto)
     const updatedUser = await this.userRepository.findOne({where:{id}})
     return{
       statusCode :200,
@@ -143,7 +143,7 @@ export class UserService {
   }
 
   async promoteToAdmin(id: string) {
-    
+
     const user = await this.userRepository.findOneBy({ id });
     if (!user) {
       throw new NotFoundException('User not found');
