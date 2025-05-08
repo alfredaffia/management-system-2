@@ -159,7 +159,15 @@ export class UserService {
     return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
   }
 
-  async remove(id:string) {
-    return this.userRepository.delete(id)
+  async remove(id: string) {
+    const result = await this.userRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Library record with ID ${id} not found`);
+    }
+    const newresult = await this.userRepository.delete(id)
+
+    return {
+      message: `Library record with ID ${id} deleted successfully`
+    };
   }
 }
