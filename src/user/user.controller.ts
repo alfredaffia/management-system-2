@@ -46,6 +46,12 @@ export class UserController {
   async promoteToAdmin(@Param('id') id: string) {
     return this.userService.promoteToAdmin(id);
   }
+  @Patch(':id/demote')
+  @UseGuards(AuthGuard())
+  @Roles(UserRole.SUPERADMIN) // Only allow superadmin to demote others
+  async DemoteAdmin(@Param('id') id: string) {
+    return this.userService.DemoteAdmin(id);
+  }
 
 
   @Delete(':id')

@@ -148,17 +148,27 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-  
     // Set the role to ADMIN
     user.role = UserRole.ADMIN;
-  
     // Save the updated user
     const updatedUser = await this.userRepository.save(user);
-  
     // Return only specific fields as Partial<User>
     return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
   }
 
+  async DemoteAdmin(id: string) {
+
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    // Set the role to USER
+    user.role = UserRole.USER;
+    // Save the updated user
+    const updatedUser = await this.userRepository.save(user);
+    // Return only specific fields as Partial<User>
+    return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
+  }
   async remove(id: string) {
     const result = await this.userRepository.delete(id);
     if (result.affected === 0) {
