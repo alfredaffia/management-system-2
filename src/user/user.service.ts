@@ -159,7 +159,7 @@ export class UserService {
     return { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role };
   }
 
-  async remove(id) {
+  async remove(id:string) {
     return this.userRepository.delete(id)
   }
 }
