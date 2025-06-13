@@ -11,8 +11,6 @@ import { LoginDto } from './dto/login.dto';
 import { Request, Response } from 'express';
 
 @Injectable()
-// user.service file
-
 export class UserService {
   constructor(@InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService) { }
@@ -26,11 +24,7 @@ export class UserService {
     const hashPassword = await argon2.hash(password);
 
     const userDetails = await this.userRepository.save({
-      email,
-      password: hashPassword,
-      firstName,
-      lastName,
-      ...rest
+      email, password: hashPassword,firstName,lastName,...rest
     })
 
     const Userpayload = { id: userDetails.id, email: userDetails.email };

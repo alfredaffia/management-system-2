@@ -18,3 +18,7 @@
 - KISS (Keep It Simple, Stupid)
 - YAGNI (You Aren't Gonna Need It)
 - Separation of Concerns
+
+
+
+## write an endpoint that block and un block user 

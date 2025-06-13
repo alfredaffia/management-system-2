@@ -22,6 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
   async validate(payload: {email}): Promise<User>{
     const {email} = payload;
     const user = await this.userService.findEmail(email)
+    console.log(user.email)
     if(!user){
         throw new UnauthorizedException('Login first to access this endpoint')
     }
